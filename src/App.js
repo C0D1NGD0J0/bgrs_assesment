@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import { Provider } from "react-redux";
 import Home from "./pages/home";
 import store from "./store";
-import './App.css';
+import 'antd/dist/antd.css';
+import './App.scss';
 
 function App() {
   return (
