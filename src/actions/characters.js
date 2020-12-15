@@ -13,7 +13,6 @@ export const getCharacters = (page) => async (dispatch) =>{
 };
 
 export const getCharacterMovies = (character) => async (dispatch) =>{
-  console.log(character, 'kskskskks')
   try {
     let movies = await Promise.all(
       character.films.map(async (movie) =>{

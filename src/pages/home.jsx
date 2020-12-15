@@ -1,14 +1,16 @@
+import { Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getCharacters, getCharacterMovies } from "../actions/characters";
+import MoviesList from "../components/moviesList";
+import CharactersList from "../components/characterList";
 
 const Home = (props) => {
 	const dispatch = useDispatch();
 	const [movies, setMovies] = useState([]);
-	const [selectedCharacted, setSelectedCharacter] = useState("Select Character");
 	const [characters, setCharacters] = useState([]);
 	const swData = useSelector((state) => state.characters);
-
+	
 	useEffect(() => {
 		dispatch(getCharacters());
 		return () => {
@@ -31,39 +33,20 @@ const Home = (props) => {
 		};
 	}, [swData && swData.movies]);
 
-	console.log(selectedCharacted)
+
+	if(swData && swData.loading){
+		return <Spin size="large"/>
+	};
+
 	return (
 		<div className="container">
 			<h3>List of Characters</h3>
-			<select onChange={(e) => {
-				setSelectedCharacter(characters[e.target.value])
-				dispatch(getCharacterMovies(characters[e.target.value]))
-			}} value={selectedCharacted}>
-				<option disabled={true} value="Select Character">Select Character</option>
-				
-				{characters && characters.map((item, index) =>{
-					return (
-						<option 
-							key={item.name} 
-							value={index}
-						>
-							{item.name}
-						</option>
-					);
-				})}
-			</select>
+			<CharactersList characters={characters} />
 
 			<h3>List of movies</h3>
-			<ul>
-				{movies.length ? movies.map((item) =>{
-					return(
-					<li 
-						key={item.title}
-					>
-						{item.title}
-					</li>)
-				}) : <h4>Please select a character</h4>}
-			</ul>
+			<MoviesList movies={movies}/>
+
+			<h4>Name/Movie Year: {movies.length && <span> {`${movies[movies.length-1].title} /  ${movies[movies.length-1].release_date}`}</span>}</h4>
 		</div>
 	);
 };

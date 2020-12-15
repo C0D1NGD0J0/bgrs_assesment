@@ -18,19 +18,19 @@ const charactersReducer = (state = initialState, action) =>{
     case FETCH_CHARACTERS:
       return {
         ...state,
-        loading: false,
         characters: payload.results,
         pagination: {
           totalResources: payload.count,
           count: state.characters.length,
           hasMoreResources: state.characters.length < payload.count
         },
+        loading: false,
       };
     case FETCH_MOVIES:
         return {
           ...state,
-          loading: false,
           movies: payload,
+          loading: false,
         };
     default:
       return state;
