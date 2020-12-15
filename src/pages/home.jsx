@@ -4,8 +4,9 @@ import { getCharacters, getCharacterMovies } from "../actions/characters";
 
 const Home = (props) => {
 	const dispatch = useDispatch();
-	const [characters, setCharacters] = useState([]);
 	const [movies, setMovies] = useState([]);
+	const [selectedCharacted, setSelectedCharacter] = useState("Select Character");
+	const [characters, setCharacters] = useState([]);
 	const swData = useSelector((state) => state.characters);
 
 	useEffect(() => {
@@ -19,7 +20,7 @@ const Home = (props) => {
 		if(swData){
 			setCharacters(swData.characters);
 		};
-	}, []);
+	}, [swData && swData.characters]);
 
 	useEffect(() => {
 		if(swData.movies.length){
@@ -28,26 +29,29 @@ const Home = (props) => {
 		return () => {
 			return null;
 		};
-	}, [swData.movies]);
+	}, [swData && swData.movies]);
 
+	console.log(selectedCharacted)
 	return (
 		<div className="container">
-			{swData.loading ? <h2>Loading...</h2> : null}
-
 			<h3>List of Characters</h3>
-			{characters.length ?
-				<ul>
-					{characters.map((item) =>{
-						return(
-						<li 
-							key={item.name}
-							onClick={() => dispatch(getCharacterMovies(item))}
+			<select onChange={(e) => {
+				setSelectedCharacter(characters[e.target.value])
+				dispatch(getCharacterMovies(characters[e.target.value]))
+			}} value={selectedCharacted}>
+				<option disabled={true} value="Select Character">Select Character</option>
+				
+				{characters && characters.map((item, index) =>{
+					return (
+						<option 
+							key={item.name} 
+							value={index}
 						>
 							{item.name}
-						</li>)
-					})}
-				</ul> : <h4>Loading...1</h4>
-			}
+						</option>
+					);
+				})}
+			</select>
 
 			<h3>List of movies</h3>
 			<ul>

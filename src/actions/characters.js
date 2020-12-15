@@ -3,7 +3,7 @@ import { FETCH_CHARACTERS, FETCH_MOVIES } from "./types";
 
 const SW_URL = "https://swapi.dev/api";
 
-export const getCharacters = () => async (dispatch) =>{
+export const getCharacters = (page) => async (dispatch) =>{
   try {
     const res = await axios.get(`${SW_URL}/people/`);
     dispatch({type: FETCH_CHARACTERS, payload: res.data});
@@ -13,6 +13,7 @@ export const getCharacters = () => async (dispatch) =>{
 };
 
 export const getCharacterMovies = (character) => async (dispatch) =>{
+  console.log(character, 'kskskskks')
   try {
     let movies = await Promise.all(
       character.films.map(async (movie) =>{
@@ -20,7 +21,7 @@ export const getCharacterMovies = (character) => async (dispatch) =>{
         return res.data;
       })
     );
-    
+
     dispatch({type: FETCH_MOVIES, payload: movies});
   } catch (error) {
     console.log(error);
