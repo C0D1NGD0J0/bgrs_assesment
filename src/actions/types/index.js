@@ -1,0 +1,2 @@
+export const FETCH_CHARACTERS = "FETCH_CHARACTERS";
+export const FETCH_MOVIES = "FETCH_MOVIES";
