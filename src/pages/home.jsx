@@ -4,6 +4,7 @@ import { getCharacters } from "../actions/characters";
 
 const Home = (props) => {
 	const dispatch = useDispatch();
+	const [characterNames, setCharacterNames] = useState([]);
 	const swData = useSelector((state) => state.characters);
 
 	useEffect(() => {
@@ -13,10 +14,31 @@ const Home = (props) => {
 		};
 	}, []);
 
-	console.log(swData)
+	useEffect(() =>{
+		if(swData){
+			const names = getCharactersNames(swData.characters);
+			setCharacterNames(names);
+		};
+	}, []);
+
+	const getCharactersNames = (characters) =>{
+		let names = [];
+
+		for(let item of characters){
+			names.push(item.name)
+		};
+
+		return names;
+	};
+
 	return (
 		<div className="container">
-			<h1>Hello World</h1>
+			<ul>
+				{characterNames && characterNames.map((item) =>{
+					console.log(item)
+					return <li key={item}>{item}</li>
+				})}
+			</ul>
 		</div>
 	);
 };
